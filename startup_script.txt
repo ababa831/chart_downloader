@@ -1,0 +1,16 @@
+curl -O https://dl.google.com/cloudagents/install-logging-agent.sh
+sudo bash install-logging-agent.sh
+
+sudo timedatectl set-timezone Asia/Tokyo
+
+sudo apt update -y
+sudo apt install docker.io -y
+
+rm -rf chart_downloader/
+git clone https://github.com/ababa831/chart_downloader.git
+cd chart_downloader
+chmod +x ./entrypoint.sh
+sudo docker build . -t chart_downloader
+chmod +x ./docker_run.sh
+
+./docker_run.sh
