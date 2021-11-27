@@ -1,4 +1,5 @@
 # chart_downloader
+
 dailyでチャートを最新情報に更新して収集
 
 構成はminervini_screeningを踏襲している
