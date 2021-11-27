@@ -16,7 +16,7 @@ directory="stock-batch"
 destination="gs://$bucket/$directory/$country/"
 
 if [ "$country" != "None" ]; then
-    sudo docker run --rm -it --name chart_downloader \
+    sudo docker run --rm --name chart_downloader \
     --env SLACK_WEB_HOOK=$SLACK_WEB_HOOK \
     -v $PWD:/home \
     chart_downloader:latest --filename_chart $filename_chart 
