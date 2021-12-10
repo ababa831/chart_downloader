@@ -11,5 +11,5 @@ dailyでチャートを最新情報に更新して収集
     - SLACK_WEB_HOOK_CHART_DOWNLOADER: Slackにログを投稿するためのIncoming Webhook URL
 3. GCP Compute Engine Instance作成
     - startup script設定欄に, src/startup_script.txt内のコマンドを入力
-4. Cloud Runに定期実行設定
+4. Cloud Schedulerに定期実行設定
     - EndpointのURLは作成したInstanceに対応したものを指定
