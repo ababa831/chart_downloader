@@ -27,8 +27,8 @@ if [ "$country" != "None" ]; then
 
     postdata="{\"text\": \"Upload requirements.txt and $filename_chart to $destination\"}"
     curl -X POST -H 'Content-type: application/json' --data "$(echo $postdata)" $SLACK_WEB_HOOK
-    gsutil cp $(cd $(dirname ${BASH_SOURCE:-$0}); pwd)/requirements.txt  $destination
     gsutil cp $(cd $(dirname ${BASH_SOURCE:-$0}); pwd)/$filename_chart  $destination
+    gsutil cp $(cd $(dirname ${BASH_SOURCE:-$0}); pwd)/requirements.txt  $destination
 else
     curl -X POST -H 'Content-type: application/json' --data '{"text":"Out of the collection time"}' $SLACK_WEB_HOOK
 fi
