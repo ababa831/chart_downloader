@@ -33,4 +33,5 @@ else
     curl -X POST -H 'Content-type: application/json' --data '{"text":"Out of the collection time"}' $SLACK_WEB_HOOK
 fi
 
-
+# Compute Engineを終了
+sudo poweroff
