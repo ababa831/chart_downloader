@@ -1,0 +1,37 @@
+name: UpdateCheckerV1
+
+# UTC 火-土15:30
+on:
+  schedule:
+    - cron: '30 5 * * 2-6'
+  workflow_dispatch:
+
+# Credentialの設定は既存のService Account Keyを指定する方法しか現状対応しておらず
+# https://github.com/google-github-actions/setup-gcloud
+jobs:
+  update_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+      - name: Check Chart Uploaded on GCS
+        run: |
+          . update_checker.sh
+      # Start a Slack workflow using a webhook trigger
+      # https://github.com/slackapi/slack-github-action
+      - name: Send GitHub Action trigger data to Slack workflow
+        if: ${{ failure() }}
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
+        with:
+          payload: |
+            {
+              "text": "<!channel> ChartDownloader Batch Job Failed!"
+            }
