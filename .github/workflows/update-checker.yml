@@ -12,15 +12,18 @@ jobs:
   update_check:
     runs-on: ubuntu-latest
     steps:
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
       - uses: actions/checkout@v2
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
-        with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
       - name: 'Use gcloud CLI'
         run: 'gcloud info'
       - name: Check Chart Uploaded on GCS
         run: |
+          gsutil ls -l gs://stock-dwh-lake/stock-batch/us/chart.pkl
           . update_checker.sh
       # Start a Slack workflow using a webhook trigger
       # https://github.com/slackapi/slack-github-action
