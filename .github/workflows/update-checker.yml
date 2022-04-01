@@ -21,6 +21,7 @@ jobs:
         run: 'gcloud info'
       - name: Check Chart Uploaded on GCS
         run: |
+          gsutil ls -l gs://stock-dwh-lake/stock-batch/us/chart.pkl
           . update_checker.sh
       # Start a Slack workflow using a webhook trigger
       # https://github.com/slackapi/slack-github-action
