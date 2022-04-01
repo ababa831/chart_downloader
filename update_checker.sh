@@ -9,5 +9,6 @@ checkpoint_datetime=$(date --date $checkpoint_datetime +%s)
 # Comparision
 if [ $latest_update -lt $checkpoint_datetime ];
 then
+    echo "Charts on GCS was not updated today!"
     exit 1
 fi
