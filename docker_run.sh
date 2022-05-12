@@ -16,8 +16,10 @@ curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"$(echo $ms
 
 filename_chart="chart.pkl"
 bucket="stock-dwh-lake"
+bucket_req="stock-dwh-artifacts"
 directory="stock-batch"
 destination="gs://$bucket/$directory/$country/"
+destination_req="gs://$bucket_req/$directory/$country/"
 
 if [ "$country" != "None" ]; then
     sudo docker run --rm --name chart_downloader \
@@ -25,10 +27,12 @@ if [ "$country" != "None" ]; then
     -v $PWD:/home \
     chart_downloader:latest --filename_chart $filename_chart
 
-    postdata="{\"text\": \"Upload requirements.txt and $filename_chart to $destination\"}"
+    postdata="{\"text\": \"Upload $filename_chart to $destination\"}"
     curl -X POST -H 'Content-type: application/json' --data "$(echo $postdata)" $SLACK_WEB_HOOK
     gsutil cp $(cd $(dirname ${BASH_SOURCE:-$0}); pwd)/$filename_chart  $destination
-    gsutil cp $(cd $(dirname ${BASH_SOURCE:-$0}); pwd)/requirements.txt  $destination
+    postdata="{\"text\": \"Upload requirements.txt to $destination_req\"}"
+    curl -X POST -H 'Content-type: application/json' --data "$(echo $postdata)" $SLACK_WEB_HOOK
+    gsutil cp $(cd $(dirname ${BASH_SOURCE:-$0}); pwd)/requirements.txt  $destination_req
 else
     curl -X POST -H 'Content-type: application/json' --data '{"text":"Out of the collection time"}' $SLACK_WEB_HOOK
 fi
