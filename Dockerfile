@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM python:3.7
 LABEL ababa831 "flvonlineconverter@gmail.com"
 
 SHELL ["/bin/bash", "-c"]
@@ -19,10 +19,7 @@ RUN apt install -y  \
     wget \
     git \
     sudo \
-    unzip \ 
-    python3-all-dev \
-    python3-pip \
-    python3-venv \
+    unzip \
     nano
 RUN rm -rf /root/.cache
 
@@ -35,17 +32,16 @@ ENV LC_ALL ja_JP.UTF-8
 # TimeZoneをJSTへ
 RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
-# Python関係の設定
-RUN pip3 install --upgrade pip
-RUN ln -s /usr/bin/python3 /usr/bin/python
-RUN ln -s /usr/bin/pip3 /usr/bin/pip
-
-# 必要なパッケージのインストール
-COPY requirements.txt /home
-RUN pip install -r requirements.txt
-
 # 定義したエントリポイントをホストOSからコピー
 COPY entrypoint.sh /home
 COPY main.py /home
+
+# poetry
+RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | /usr/local/bin/python -
+ENV PATH $PATH:/root/.poetry/bin
+RUN poetry config virtualenvs.in-project false
+COPY poetry.lock /home
+COPY pyproject.toml /home
+RUN poetry install
 
 ENTRYPOINT [ "./entrypoint.sh" ]

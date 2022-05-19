@@ -1,4 +1,4 @@
 #!/bin/bash
 
-python main.py $@
-pip freeze > requirements.txt
+poetry run python main.py $@
+poetry run pip freeze > requirements.txt
