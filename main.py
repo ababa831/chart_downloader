@@ -95,7 +95,11 @@ def get_sector_industry(tickers, ja=False, sleeptime=1):
     pbar = tqdm(tickers)
     chart = None
     #skip_indicators = []
-    for t in pbar:
+    for i, t in enumerate(pbar):
+        if i % 500 == 0:
+            msg = f"進捗: {i}/{len(tickers)}"
+            logger.info(msg)
+            print(msg)
         if len(t) > 4:
             continue
         if ja:
