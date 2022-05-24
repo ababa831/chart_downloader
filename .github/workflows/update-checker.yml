@@ -3,7 +3,7 @@ name: UpdateCheckerV1
 # UTC 火-土15:30
 on:
   schedule:
-    - cron: '30 5 * * 2-6'
+    - cron: '30 6 * * 2-6'
   workflow_dispatch:
 
 # Credentialの設定は既存のService Account Keyを指定する方法しか現状対応しておらず
